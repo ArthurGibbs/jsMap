@@ -1,0 +1,53 @@
+
+#mapContainer { 
+	background: #f0000; 
+	border: 1px solid #ccc; 
+	height: 100%; 	
+	width: 80%; 
+	left: 20%;
+
+	position: absolute; 
+	overflow: hidden;
+}
+#mapContainer #map { height: 100%; width: 100%; }
+#mapContainer #mapControls { 
+	position: absolute; 
+	left: 15px; 
+	top: 15px; 
+	width: 29px; 
+}
+#mapContainer #mapControls #up { background: url(iconUp.png) no-repeat center top; display: block; height: 26px; width: 29px; }
+#mapContainer #mapControls #down { background: url(iconDown.png) no-repeat center top; display: block; height: 27px; width: 29px; }
+#infobox { 
+	float:left; 
+	width:20%;
+	height: 100%;
+	position: relative;
+	border: 1px solid #ccc; 
+	
+}
+
+#all { 
+	height: 600px; 		
+	width: 1200px; 
+	position: absolute; 
+}
+
+
+.myButton {
+	background-color:#90c3eb;
+	-moz-border-radius:28px;
+	-webkit-border-radius:28px;
+	border-radius:28px;
+	border:1px solid #219cde;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:arial;
+	font-size:12px;
+	padding:2px 15px;
+	text-decoration:none;
+}
+.myButton:hover {
+	background-color:#b6d3de;
+}
