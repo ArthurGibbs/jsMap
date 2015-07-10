@@ -180,8 +180,10 @@ jQuery(function($) {
 		
 		if (cntry.options != null && cntry.options.includes("b")) {
 			//alert("bk");
-			
+	
 			this.toBack();
+			this.attr("fill", "#595959");
+			this.data("fill", "#595959");	
 		}
         panZoom.enable();
     }
