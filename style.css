@@ -1,6 +1,6 @@
 #all { 
-	height: 600px; 		
-	width: 1200px; 
+	height: 800px; 		
+	width: 1400px; 
 	position: absolute; 
 	
 }
@@ -35,26 +35,31 @@
 	height: 100%;
 	position: relative;
 	border: 1px solid #ccc; 
-	background-color: #98A9D9;
+	background-color: #6684D9;
 	
 	color:#EBEDFF;
 	font-family:arial;
-	font-size:10px;
+
 }
 
 #infobox  #infoname {
 	height: 20px;
 	display: block;
-	font-size:16px;
+	font-size:18px;
+	margin-left: 5px;
+	margin-right: 5px;
+
 	
 }
 
 #infobox  #infodetail {
 	height: 40px;
 	display: block;
-	background-color: #bbbbbb;
+	/*background-color: #bbbbbb;*/
 	margin-left: 5px;
 	margin-right: 5px;
+	margin-bottom:10px;
+	font-size:12px;
 }
 
 
@@ -71,17 +76,19 @@
 
 
 .myButton {
-	background-color:#3F4FB5;
-	-moz-border-radius:20px;
-	-webkit-border-radius:20px;
-	border-radius:20px;
-	border:1px solid #EBEDFF;
+	background-color:#0C085C;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+	border:1px solid #000000;
 	display:inline-block;
 	cursor:pointer;
 	color:#EBEDFF;
 	font-family:arial;
 	font-size:10px;
-	padding:2px 8px;
+	padding:2px 4px;
+	margin-left:1px;
+	margin-right:1px;
 	text-decoration:none;
 }
 .myButton:hover {
