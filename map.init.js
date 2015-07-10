@@ -2,7 +2,7 @@ jQuery(function($) {
     var inDetails = false;
     var container = $("#map");
 
-    var r = Raphael('map', container.width(), container.height());
+    var r = Raphael('map', container.width()* 10, container.height()* 10);
     var panZoom = r.panzoom({
         initialZoom: 6,
         initialPosition: {
@@ -32,35 +32,63 @@ jQuery(function($) {
 
     var countries = [];
     var i = 0;
-    for (var country in paths) {
-        var obj = r.path(paths[country].path);
+	
+	
+		$.get("map.svg", function(d){
+			$(d).find('path').each(function(){			
+				var $book = $(this); 
+				var description = $book.find('desc').text(); 
+				var dat = $book.attr("d");
+				var id = $book.attr("id");
+				var style = $book.attr("style");
+
+				var singularInstance = {};
+				singularInstance.path = dat;
+				singularInstance.name = id;
+				singularInstance.detail = description;
+
+				singularInstance.objectp = placeObject(singularInstance);
+				countries[i] = singularInstance;		
+				placeButton(singularInstance);		
+				i++;
+				
+			});
+			$(".myButton").click(doButtonPress);
+		});	
+			
+			
+  //  for (var country in paths) {
+	//	var singularInstance = {};
+	//	singularInstance.path = paths[country].path;
+	//	singularInstance.name = paths[country].name;       
+	//	singularInstance.objectp = placeObject(singularInstance);
+   //     countries[i] = singularInstance;		
+	//	placeButton(singularInstance);		
+  //      i++;
+  //  }
+	
+	function placeButton(instance) {
+		var element = document.createElement("input");
+        //Assign different attributes to the element. 
+        element.type = "button";
+        element.value = instance.name;
+        element.name = instance.name;
+        element.className = "myButton";
+        element.setAttribute('data-id', i)
+        infolist.appendChild(element);
+	}
+	
+	function placeObject(instance) {
+		var obj = r.path(instance.path);
         obj.attr(attributes);
         obj.click(handleDetails);
         obj.data("hoverFill", "#3e5f43");
         obj.data("fill", "#F1F1F1");
 		obj.data("id", i);
-        obj.data("name", paths[country].name)
-        obj.hover(animateOver, animateOut);
-		
-
-        var element = document.createElement("input");
-        //Assign different attributes to the element. 
-        element.type = "button";
-        element.value = paths[country].name;
-        element.name = paths[country].name;
-        element.className = "myButton";
-        element.setAttribute('data-id', i)
-
-        infolist.appendChild(element);
-
-
-        countries[i] = {};
-        countries[i].name = paths[country].name;
-        //countries[i].centerpos = pathtocenter(paths[country].path);
-        countries[i].objectp = obj;
-        i++;
-    }
-
+       // obj.data("name", instance.name)
+        obj.hover(animateOver, animateOut);	
+		return obj 
+	}
 	
 	var lastobject = null;
     var doButtonPress = function() {
@@ -79,7 +107,7 @@ jQuery(function($) {
 		displayDetails(country);
     }
 
-    $(".myButton").click(doButtonPress);
+    
 
     function pathtocenter(path) {
         //needs improvement
@@ -115,23 +143,34 @@ jQuery(function($) {
     });
 
     function animateOver() {
+		displayDetails(countries[this.data("id")]);
         if (this.data("hoverFill")) {
             this.attr("fill", this.data("hoverFill"));
         }
     }
 
     function animateOut() {
+		 displayDetails(null);
         if (this.data("fill")) {
             this.attr("fill", this.data("fill"));
         }
     }
 	
 	function displayDetails(obj) {
-		document.getElementById("infoname").innerHTML = obj.name	
+		if (obj != null) {
+			document.getElementById("infoname").innerHTML = obj.name;	
+			document.getElementById("infodetail").innerHTML = obj.detail;	
+		} 
+		else {
+			document.getElementById("infoname").innerHTML = "";	
+			document.getElementById("infodetail").innerHTML = "";		
+		}
 	}
 
     function handleDetails() {
-        document.getElementById("infoname").innerHTML = this.data("name")
+        displayDetails(countries[this.data("id")]);
+        var currentpos = panZoom.getCurrentPosition();
+		alert(currentpos.x);
 
         // need to re enable panzoom for some reason
         panZoom.enable();

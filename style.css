@@ -1,6 +1,11 @@
-
+#all { 
+	height: 600px; 		
+	width: 1200px; 
+	position: absolute; 
+	
+}
 #mapContainer { 
-	background: #f0000; 
+	
 	border: 1px solid #ccc; 
 	height: 100%; 	
 	width: 80%; 
@@ -8,8 +13,13 @@
 
 	position: absolute; 
 	overflow: hidden;
+	background-color: #D1DECE;
 }
-#mapContainer #map { height: 100%; width: 100%; }
+#mapContainer #map { 
+	height: 100%; 
+	width: 100%; 
+
+}
 #mapContainer #mapControls { 
 	position: absolute; 
 	left: 15px; 
@@ -18,36 +28,62 @@
 }
 #mapContainer #mapControls #up { background: url(iconUp.png) no-repeat center top; display: block; height: 26px; width: 29px; }
 #mapContainer #mapControls #down { background: url(iconDown.png) no-repeat center top; display: block; height: 27px; width: 29px; }
+
 #infobox { 
 	float:left; 
 	width:20%;
 	height: 100%;
 	position: relative;
 	border: 1px solid #ccc; 
+	background-color: #98A9D9;
+	
+	color:#EBEDFF;
+	font-family:arial;
+	font-size:10px;
+}
+
+#infobox  #infoname {
+	height: 20px;
+	display: block;
+	font-size:16px;
 	
 }
 
-#all { 
-	height: 600px; 		
-	width: 1200px; 
-	position: absolute; 
+#infobox  #infodetail {
+	height: 40px;
+	display: block;
+	background-color: #bbbbbb;
+	margin-left: 5px;
+	margin-right: 5px;
 }
+
+
+
+#infobox #logo {
+	display: block;
+	margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto; 
+	margin-bottom: 10px;
+}
+
+
 
 
 .myButton {
-	background-color:#90c3eb;
-	-moz-border-radius:28px;
-	-webkit-border-radius:28px;
-	border-radius:28px;
-	border:1px solid #219cde;
+	background-color:#3F4FB5;
+	-moz-border-radius:20px;
+	-webkit-border-radius:20px;
+	border-radius:20px;
+	border:1px solid #EBEDFF;
 	display:inline-block;
 	cursor:pointer;
-	color:#ffffff;
+	color:#EBEDFF;
 	font-family:arial;
-	font-size:12px;
-	padding:2px 15px;
+	font-size:10px;
+	padding:2px 8px;
 	text-decoration:none;
 }
 .myButton:hover {
-	background-color:#b6d3de;
+	background-color:#6675D9;
 }
