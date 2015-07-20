@@ -2,24 +2,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<!--<meta http-equiv="Cache-control" content="public">-->
 	<title>Interactive Diamond Map</title>
-	<link href="src/raphael.pan-zoom.css" rel="stylesheet" type="text/css" />
+	<!--<link href="src/raphael.pan-zoom.css" rel="stylesheet" type="text/css" />-->
 	<link href="./style.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script type="text/javascript" src="vendor/raphael-min.js"></script>
 	<script type="text/javascript" src="src/raphael.pan-zoom.min.js"></script>
 	<script type="text/javascript" src="./map.init.js"></script>
+	<script type="text/javascript" src="js/fuzzyset.js"></script>
+
 </head>
 
 <body>
 	<div id ="all">
 		<div id="infobox">
-			<img id="logo" src="topmenulogo.png">
+			<img id="logo" src="img/topmenulogo.png">
 			<div id = "infoname"></div>
 			<div id = "infodetail"></div>	
-			
-
-			Select a Unit to display:
+		
+			<input type="search" placeholder="Type misspelled state" id="searchbox">
+	
+			<br>Select a Unit to display:
 			<div id = "infolist">
 			</div>
 		</div>

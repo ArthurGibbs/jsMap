@@ -7,8 +7,8 @@ jQuery(function($) {
  
         minZoom: 1,
         initialPosition: {
-            x: 271,
-            y: 285
+            x: 94,
+            y: 213
         }
     });
     var isHandling = false;
@@ -25,9 +25,11 @@ jQuery(function($) {
     var mapObjects = [];
     var rotationTimer;
     var lastSelectedObject = null;
-    var p1 = null;
-    var p2 = null;
 
+	
+	var fussyNames = {};
+	var clearNames = [];
+	rotationTimer = setTimeout(rotate, 20);
     function pointTo(p, x, y) {
         var path = "m " + x + "," + y + " 5,30 5,-10 10,0 -20,-20 z";
         if (p !== null) {
@@ -44,7 +46,7 @@ jQuery(function($) {
         p.attr(attributes);
     }
 
-    $.get("map.svg", function(d) {
+    $.get("data/map.svg", function(d) {
         var i = 0;
         $(d).find('path').each(function() {
             var $book = $(this);
@@ -59,6 +61,7 @@ jQuery(function($) {
             singularInstance.id = i;
             var rx = /^([^\[]*)/gm;
             var arr = rx.exec(title);
+			singularInstance.title = null;
             if (arr !== null && arr[1]) {
                 singularInstance.title = arr[1];
             }
@@ -78,6 +81,11 @@ jQuery(function($) {
             singularInstance.pos.x = singularInstance.objectp.getBBox().x + (singularInstance.objectp.getBBox().width / 2);
             singularInstance.pos.y = singularInstance.objectp.getBBox().y + (singularInstance.objectp.getBBox().height / 2);
 
+			//alert("got");
+			if (singularInstance.title != null){
+				var stringtitle = singularInstance.title;
+				clearNames.push(stringtitle);
+			}
             mapObjects[i] = singularInstance;
             if (singularInstance.title && !(singularInstance.options && singularInstance.options.includes("o"))) {
                 placeButton(singularInstance);
@@ -85,8 +93,15 @@ jQuery(function($) {
             i++;
 
         });
-        $(".myButton").click(doButtonPress);
+       
+		
+		
+		fussyNames = FuzzySet(clearNames, true, 2,5);
+	
+		
     });
+	
+
 
     function rotate() {
         if (mapObjects.length > 0) {
@@ -98,10 +113,12 @@ jQuery(function($) {
                 }
             }
         }
-        rotationTimer = setTimeout(rotate, 20);
+		clearTimeout(rotationTimer)
+		//rotationTimer.remove;
+       // rotationTimer = setTimeout(rotate, 20);
     }
 
-    rotationTimer = setTimeout(rotate, 20);
+  
 
 
     function placeButton(instance) {
@@ -113,7 +130,38 @@ jQuery(function($) {
         element.className = "myButton";
         element.setAttribute('data-id', instance.id);
         infolist.appendChild(element);
+		$(".myButton").click(doButtonPress);
     }
+	
+	var form=document.getElementById('searchbox');
+	form.addEventListener('keyup',search,false);
+	
+	function search(){
+		var seachText = document.getElementById('searchbox').value
+		//alert("SC:" + seachText)
+		var results = fussyNames.get(seachText,{});
+		
+
+		
+		infolist.innerHTML = "";
+		if (results.length > 0) {
+			for (var i = 0; i < results.length; ++i) {		
+				for (var j = 0; j < mapObjects.length; ++j) {
+					if (mapObjects[j].title == results[i][1] ){
+						placeButton(mapObjects[j]);
+					}	
+				}		
+			}
+		}
+		else {
+			for (var j = 0; j < mapObjects.length; ++j) {
+				if (mapObjects[j].title && !(mapObjects[j].options && mapObjects[j].options.includes("o"))) {
+					placeButton(mapObjects[j]);
+				}	
+			}
+		}
+	}
+
 
     function placeObject(instance) {
 
@@ -178,16 +226,16 @@ jQuery(function($) {
     function zoomTo(mapObject) {
 
         var currentPos = panZoom.getCurrentPosition();
-        alert("current:" + currentPos.x + "," + currentPos.y);
+       // alert("current:" + currentPos.x + "," + currentPos.y);
 
 
-        alert("object:" + mapObject.pos.x + "," + mapObject.pos.y);
+        //alert("object:" + mapObject.pos.x + "," + mapObject.pos.y);
 
 
 
 
         //alert(panZoom.getCurrentZoom());
-        panZoom.zoomIn(7 - panZoom.getCurrentZoom());
+        //panZoom.zoomIn(7 - panZoom.getCurrentZoom());
 
         var difx = mapObject.pos.x - currentPos.x;
         var dify = mapObject.pos.y - currentPos.y;
@@ -195,9 +243,9 @@ jQuery(function($) {
         //alert("diff:" + difx + "," + dify);
 
 
-        panZoom.pan(difx * 0.03, dify * 0.03);
+        //panZoom.pan(difx * 0.3, dify * 0.3);
         //panZoom.pan(10, 10);
-        pointTo(p2, difx, dify);
+       // pointTo(p2, difx +500, dify+500);
 
     }
 
@@ -207,14 +255,18 @@ jQuery(function($) {
         }
     }
 
-
     $("#mapContainer #up").click(function(e) {
         panZoom.zoomIn(1);
         e.preventDefault();
     });
+	
     $("#mapContainer #down").click(function(e) {
         panZoom.zoomOut(1);
         e.preventDefault();
+    });
+	
+	$("#others #moveTopLeft").click(function (e) {
+        panZoom.pan(1,1);
     });
 
     function animateOver() {
@@ -254,13 +306,14 @@ jQuery(function($) {
     }
 
     function possibleOpenParentRoof(mapObject) {
-        var rx = /.*[B]\=([0-9])+.*/gm;
-        var arr = rx.exec(mapObject.options);
-        if (arr !== null && arr[1] !== null) {
-            for (var i = 1; i <= arr.length; i++) {
-                openRoof(arr[i]);
-            }
-        }
+		var options = mapObject.options;
+		var qualityRegex = /B\=([0-9]+)/g,
+		matches,
+		qualities = [];
+
+		while (matches = qualityRegex.exec(options)) {
+			openRoof(matches[1]); 
+		}
     }
 
     function possibleOpenRoof(mapObject) {
@@ -272,6 +325,7 @@ jQuery(function($) {
     }
 
     function openRoof(id) {
+		//alert("opening roof :" + id);
         if (mapObjects.length > 0) {
             for (var i = 0; i <= mapObjects.length; i++) {
                 if (mapObjects[i] && mapObjects[i].options) {
