@@ -18,7 +18,7 @@ jQuery(function($) {
 	var fuseSearchBook = {};
 
 	//Disabled due to causing crash? unsolved
-	//rotationTimer = setTimeout(rotate, 20);
+	rotationTimer = setTimeout(rotate, 20);
 
 	
     $.get("data/map.svg", function(d) {
